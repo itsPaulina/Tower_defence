@@ -1,0 +1,4 @@
+startMoney=200
+baseHP=10
+baseEnemiesPerWave=5
+spawnInterval=1.5
