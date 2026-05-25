@@ -6,6 +6,9 @@ void Game::handleEvents() {
         if (event->is<sf::Event::Closed>()) {
             window_.close();
         }
+         if (inMenu_) {
+            continue;
+        }
 
         if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>()) {
             handleMousePressed(*mb);

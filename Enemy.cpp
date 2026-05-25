@@ -17,11 +17,12 @@ sf::Vector2f Enemy::tileCenter(const sf::Vector2i& tile) const {
 Enemy::Enemy(int hp, float speed, int reward,
              const std::vector<sf::Vector2i>& path,
              float tileSize, sf::Color color, float radius)
-    : hp_(hp), speed_(speed), reward_(reward),
+    : hp_(hp), maxHp_(hp), speed_(speed), reward_(reward),
       animation_(4, 6.f), path_(path), tileSize_(tileSize),
       pathIndex_(0), shape_(radius) {
     shape_.setOrigin({radius, radius});
     shape_.setFillColor(color);
+
 
     auto start = tileCenter(path_.front());
     x_ = start.x;
@@ -164,6 +165,7 @@ void Slime::update(float dt) {
 
 void Slime::draw(sf::RenderWindow& window) {
     window.draw(sprite_);
+     drawHealthBar(window);
 }
 
 sf::FloatRect Slime::getBounds() const {
@@ -245,6 +247,7 @@ void Goblin::update(float dt) {
 
 void Goblin::draw(sf::RenderWindow& window) {
     window.draw(sprite_);
+     drawHealthBar(window);
 }
 
 sf::FloatRect Goblin::getBounds() const {
@@ -327,8 +330,33 @@ void Wolf::update(float dt) {
 
 void Wolf::draw(sf::RenderWindow& window) {
     window.draw(sprite_);
+    drawHealthBar(window);
 }
 
 sf::FloatRect Wolf::getBounds() const {
     return sprite_.getGlobalBounds();
+}
+
+void Enemy::drawHealthBar(sf::RenderWindow& window) {
+    float barWidth = 40.f;
+    float barHeight = 5.f;
+
+    float ratio = hp_ / maxHp_;
+    if (ratio < 0.f) ratio = 0.f;
+
+    sf::FloatRect bounds = getBounds();
+
+    float barX = bounds.position.x + (bounds.size.x - barWidth) / 2.f;
+    float barY = bounds.position.y - 10.f;
+
+    sf::RectangleShape back({barWidth, barHeight});
+    back.setFillColor(sf::Color::Black);
+    back.setPosition({barX, barY});
+
+    sf::RectangleShape front({barWidth * ratio, barHeight});
+    front.setFillColor(sf::Color::Green);
+    front.setPosition({barX, barY});
+
+    window.draw(back);
+    window.draw(front);
 }

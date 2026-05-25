@@ -1,8 +1,6 @@
 #include "Game.h"
 
 void Game::render() {
-    window_.clear(sf::Color(20, 20, 20));
-
     float mapWidth = static_cast<float>(window_.getSize().x) - menuWidth_;
     float mapHeight = static_cast<float>(window_.getSize().y);
 
@@ -57,14 +55,28 @@ void Game::render() {
     }
 
     towerMenu_.draw(window_);
-    // drawUI();
-
-    window_.display();
+    drawUI();
 }
 
 void Game::drawUI() {
-    sf::RectangleShape bar({1280.f, 40.f});
-    bar.setFillColor(sf::Color(0, 0, 0, 180));
-    bar.setPosition({0.f, 0.f});
-    window_.draw(bar);
+    float panelX = static_cast<float>(window_.getSize().x) - menuWidth_;
+
+    sf::Text goldText(font_, "Gold: " + std::to_string(gold_), 26);
+    goldText.setFillColor(sf::Color::Yellow);
+    goldText.setPosition({panelX + 20.f, 20.f});
+    window_.draw(goldText);
+
+    sf::Text levelText(font_, "LEVEL " + std::to_string(currentLevel_), 42);
+    levelText.setFillColor(sf::Color::White);
+
+    sf::FloatRect bounds = levelText.getLocalBounds();
+    levelText.setOrigin({
+        bounds.position.x + bounds.size.x / 2.f,
+        bounds.position.y + bounds.size.y / 2.f
+    });
+
+    float mapWidth = static_cast<float>(window_.getSize().x) - menuWidth_;
+    levelText.setPosition({mapWidth / 2.f, 40.f});
+
+    window_.draw(levelText);
 }

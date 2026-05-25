@@ -11,25 +11,49 @@ public:
     void run();
 
 private:
+    struct WaveData {
+        int slimes;
+        int goblins;
+        int wolves;
+        int towerLimit;
+    };
+
     sf::RenderWindow window_;
+    bool inMenu_ = true;
+    sf::Font font_;
 
     int money_;
     int baseHP_;
-    int wave_;
-    int toSpawn_;
+
+    int gold_ = 0;
+    int currentLevel_ = 1;
+    int maxLevels_ = 5;
+    int towersPlaced_ = 0;
+    int towerLimit_ = 2;
+    int enemiesToSpawn_ = 0;
+
+    int slimesLeftToSpawn_ = 0;
+    int goblinsLeftToSpawn_ = 0;
+    int wolvesLeftToSpawn_ = 0;
+
+    float spawnTimer_ = 0.f;
+    float spawnInterval_ = 1.f;
+
+    bool levelInProgress_ = false;
+    bool gameOver_ = false;
+    bool victory_ = false;
 
     float tileSize_;
     int cols_;
     int rows_;
-
     float menuWidth_ = 180.f;
 
     sf::Clock deltaClock_;
-    sf::Clock spawnClock_;
 
     std::vector<std::unique_ptr<GameObject>> objects_;
     std::vector<sf::Vector2i> path_;
     std::vector<sf::Vector2i> occupiedTiles_;
+    std::vector<WaveData> waves_;
 
     sf::Texture grassTexture_;
     sf::Texture dirtTexture_;
@@ -38,6 +62,10 @@ private:
     sf::Texture tankTexture_;
 
     TowerMenu towerMenu_;
+
+    void setupMenu();
+    void updateMenu();
+    void drawMenu();
 
     void handleEvents();
     void handleMousePressed(const sf::Event::MouseButtonPressed& mb);
@@ -48,9 +76,12 @@ private:
     void render();
     void drawUI();
 
-    void spawnEnemy();
-    void handleCollisions();
-    void nextWave();
+    void setupWaves();
+    void startLevel(int level);
+    void spawnNextEnemy();
+    void checkLevelFinished();
+    int wave_ = 1;
+    int toSpawn_ = 0;
 
     bool isPathTile(int col, int row) const;
     bool isTileOccupied(int col, int row) const;

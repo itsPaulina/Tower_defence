@@ -22,7 +22,6 @@ public:
     void startDragging(TowerType type);
     void stopDragging();
     bool isDragging() const;
-
     TowerType getDraggedTower() const;
 
     void updateDragPreview(sf::Vector2f mousePos,
@@ -39,11 +38,9 @@ private:
     float menuWidth_ = 180.f;
 
     sf::RectangleShape menuBackground_;
-
     sf::RectangleShape catapultButton_;
     sf::RectangleShape cannonButton_;
     sf::RectangleShape tankButton_;
-
     sf::RectangleShape dragPreview_;
 
     sf::Texture* catapultTexture_ = nullptr;

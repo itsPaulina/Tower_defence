@@ -7,6 +7,7 @@
 class Enemy : public GameObject {
 protected:
     int hp_;
+    float maxHp_;
     float speed_;
     int reward_;
     bool active_ = true;
@@ -23,6 +24,7 @@ protected:
 
     sf::Vector2f tileCenter(const sf::Vector2i& tile) const;
     void moveAlongPath(float dt);
+     void drawHealthBar(sf::RenderWindow& window);
 
 public:
     Enemy(int hp, float speed, int reward,

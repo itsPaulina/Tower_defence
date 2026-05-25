@@ -27,6 +27,9 @@ protected:
     int damage_;
     float cooldown_;
     float cooldownTimer_;
+    int catapultCost_ = 30;
+int cannonCost_ = 50;
+int tankCost_ = 80;
 
 private:
     sf::RectangleShape shape_;
