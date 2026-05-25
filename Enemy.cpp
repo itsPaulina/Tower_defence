@@ -2,6 +2,11 @@
 #include <cmath>
 #include <iostream>
 
+// Rezerwacja pamięci dla tekstur statycznych komponentów klas
+sf::Texture Slime::texture_;
+sf::Texture Goblin::texture_;
+sf::Texture Wolf::texture_;
+
 sf::Vector2f Enemy::tileCenter(const sf::Vector2i& tile) const {
     return {
         tile.x * tileSize_ + tileSize_ / 2.f,
@@ -83,21 +88,18 @@ int Enemy::getHp() const {
     return hp_;
 }
 
+// ========================= SLIME =========================
+
 Slime::Slime(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(30, 70.f, 10, path, tileSize, sf::Color(0, 200, 100), 16.f) {
-}
-
-void Slime::update(float dt) {
-    Enemy::update(dt);
-}
-
-Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(55, 100.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f) {
-    if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\gob.png")) {
-        std::cerr << "Could not load goblin1.png\n";
+    : Enemy(30, 70.f, 10, path, tileSize, sf::Color::White, 16.f),
+      sprite_(texture_) 
+{
+    if (texture_.getSize().x == 0) {
+        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\slime.png")) {
+            std::cerr << "Could not load slime.png\n";
+        }
     }
 
-    sprite_.setTexture(texture_);
     sprite_.setTextureRect(sf::IntRect(
         {0, 0},
         {frameWidth_, frameHeight_}
@@ -106,6 +108,93 @@ Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
     sprite_.setOrigin({
         frameWidth_ / 2.f,
         frameHeight_ / 2.f
+    });
+
+    sf::Vector2f slimeScale(
+        (tileSize * 0.7f) / frameWidth_,
+        (tileSize * 0.7f) / frameHeight_
+    );
+    sprite_.setScale(slimeScale);
+
+    sprite_.setPosition(getPosition());
+}
+
+void Slime::updateDirection(float dx, float dy) {
+    if (std::abs(dx) > std::abs(dy)) {
+        if (dx > 0)
+            currentRow_ = 1; // right
+        else
+            currentRow_ = 3; // left
+    } else {
+        if (dy > 0)
+            currentRow_ = 0; // down/front
+        else
+            currentRow_ = 2; // up/back
+    }
+}
+
+void Slime::updateAnimation(float dt) {
+    animationTimer_ += dt;
+
+    if (animationTimer_ >= animationSpeed_) {
+        animationTimer_ = 0.f;
+        currentFrame_ = (currentFrame_ + 1) % frameCount_;
+
+        sprite_.setTextureRect(sf::IntRect(
+            {currentFrame_ * frameWidth_, currentRow_ * frameHeight_},
+            {frameWidth_, frameHeight_}
+        ));
+    }
+}
+
+void Slime::update(float dt) {
+    sf::Vector2f oldPos = getPosition();
+
+    Enemy::update(dt);
+
+    sf::Vector2f newPos = getPosition();
+    float dx = newPos.x - oldPos.x;
+    float dy = newPos.y - oldPos.y;
+
+    updateDirection(dx, dy);
+    updateAnimation(dt);
+
+    sprite_.setPosition(newPos);
+}
+
+void Slime::draw(sf::RenderWindow& window) {
+    window.draw(sprite_);
+}
+
+sf::FloatRect Slime::getBounds() const {
+    return sprite_.getGlobalBounds();
+}
+
+// ========================= GOBLIN =========================
+
+Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
+    : Enemy(55, 100.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f),
+      sprite_(texture_)
+{
+    if (texture_.getSize().x == 0) {
+        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\gob.png")) {
+            std::cerr << "Could not load gob.png\n";
+        }
+    }
+
+    sprite_.setTextureRect(sf::IntRect(
+        {0, 0},
+        {frameWidth_, frameHeight_}
+    ));
+
+    sprite_.setOrigin({
+        frameWidth_ / 2.f,
+        frameHeight_ / 2.f
+    });
+
+    sprite_.setScale(sf::Vector2f{
+        (tileSize * 1.3f) / frameWidth_,
+        (tileSize * 1.3f) / frameHeight_
     });
 
     sprite_.setPosition(getPosition());
@@ -158,10 +247,88 @@ void Goblin::draw(sf::RenderWindow& window) {
     window.draw(sprite_);
 }
 
+sf::FloatRect Goblin::getBounds() const {
+    return sprite_.getGlobalBounds();
+}
+
+// ========================= WOLF =========================
+
 Wolf::Wolf(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(90, 135.f, 20, path, tileSize, sf::Color(190, 190, 190), 20.f) {
+    : Enemy(90, 135.f, 20, path, tileSize, sf::Color::White, 20.f),
+      sprite_(texture_)
+{
+    if (texture_.getSize().x == 0) {
+        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\wolf.png")) {
+            std::cerr << "Could not load wolf.png\n";
+        }
+    }
+
+    sprite_.setTextureRect(sf::IntRect(
+        {0, 0},
+        {frameWidth_, frameHeight_}
+    ));
+
+    sprite_.setOrigin({
+        frameWidth_ / 2.f,
+        frameHeight_ / 2.f
+    });
+
+    sf::Vector2f scale(
+        (tileSize * 0.85f) / frameWidth_,
+        (tileSize * 0.85f) / frameHeight_
+    );
+    sprite_.setScale(scale);
+
+    sprite_.setPosition(getPosition());
+}
+
+void Wolf::updateDirection(float dx, float dy) {
+    if (std::abs(dx) > std::abs(dy)) {
+        if (dx > 0)
+            currentRow_ = 2; // right
+        else
+            currentRow_ = 1; // left
+    } else {
+        if (dy > 0)
+            currentRow_ = 0; // down/front
+        else
+            currentRow_ = 3; // up/back
+    }
+}
+
+void Wolf::updateAnimation(float dt) {
+    animationTimer_ += dt;
+
+    if (animationTimer_ >= animationSpeed_) {
+        animationTimer_ = 0.f;
+        currentFrame_ = (currentFrame_ + 1) % frameCount_;
+
+        sprite_.setTextureRect(sf::IntRect(
+            {currentFrame_ * frameWidth_, currentRow_ * frameHeight_},
+            {frameWidth_, frameHeight_}
+        ));
+    }
 }
 
 void Wolf::update(float dt) {
+    sf::Vector2f oldPos = getPosition();
+
     Enemy::update(dt);
+
+    sf::Vector2f newPos = getPosition();
+    float dx = newPos.x - oldPos.x;
+    float dy = newPos.y - oldPos.y;
+
+    updateDirection(dx, dy);
+    updateAnimation(dt);
+
+    sprite_.setPosition(newPos);
+}
+
+void Wolf::draw(sf::RenderWindow& window) {
+    window.draw(sprite_);
+}
+
+sf::FloatRect Wolf::getBounds() const {
+    return sprite_.getGlobalBounds();
 }

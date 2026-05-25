@@ -9,7 +9,7 @@ public:
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual sf::FloatRect getBounds() const = 0;
 
-    bool isActive() const;
+   virtual bool isActive() const=0;
     void deactivate();
     sf::Vector2f getPosition() const;
 

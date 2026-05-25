@@ -9,6 +9,7 @@ private:
     int damage_;
     float speed_;
     sf::CircleShape shape_;
+    bool active_ = true;
 
 public:
     Projectile(sf::Vector2f start, Enemy* target, int damage, float speed);
@@ -18,4 +19,5 @@ public:
     sf::FloatRect getBounds() const override;
     void hitTarget();
     int getDamage() const;
+     bool isActive() const override { return active_; }
 };
