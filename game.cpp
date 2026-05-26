@@ -4,30 +4,51 @@
 #include <iostream>
 #include "Enemy.h"
 
-
-
 Game::Game()
     : window_(sf::VideoMode({1280, 720}), "Tower Defense"),
       gold_(60),
-      baseHP_(10),
       tileSize_(64.f),
       cols_(1280 / 64),
-      rows_(720 / 64)  {
+      rows_(720 / 64) {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-    path_ = {
-        {0,5},{1,5},{2,5},{3,5},{4,5},{5,5},{6,5},{7,5},
-        {7,6},{7,7},{7,8},
-        {8,8},{9,8},{10,8},{11,8},{12,8},{13,8},{14,8},
-        {15,8},{16,8},{16,7},{16,6},{16,5},{16,4},
-        {16,3},{16,2},{16,1},{16,0}
-    };
+   path_ = {
+    {0,4},{1,4},{2,4},{3,4},{4,4},{5,4},{6,4},{7,4},{8,4},
+    {8,5},{8,6},{8,7},
+    {7,7},{6,7},{5,7},{4,7},{3,7},
+    {3,8},{3,9},
+    {4,9},{5,9},{6,9},{7,9},{8,9},{9,9},{10,9},{11,9},{12,9},{13,9},{14,9},
+    {14,8},{14,7},{14,6},{14,5}
+};
 
     if (!grassTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\grass.png")) {
         std::cerr << "Could not load grass.png\n";
     } else {
         grassTexture_.setRepeated(true);
     }
+
+    if (!castleTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\tower.png")) {
+    std::cerr << "Could not load tower.png\n";
+}
+else {
+        castleSprite_ = std::make_unique<sf::Sprite>(castleTexture_);
+
+    sf::Vector2f scale(
+        180.f / static_cast<float>(castleTexture_.getSize().x),
+        180.f / static_cast<float>(castleTexture_.getSize().y)
+    );
+    castleSprite_->setScale(scale);
+
+    sf::Vector2f origin(
+        static_cast<float>(castleTexture_.getSize().x) * 0.5f,
+        static_cast<float>(castleTexture_.getSize().y) * 0.5f
+    );
+    castleSprite_->setOrigin(origin);
+
+        sf::Vector2i lastTile = path_.back();
+    sf::Vector2f castlePos = tileCenter(lastTile.x, lastTile.y - 1);
+    castleSprite_->setPosition(castlePos);
+}
 
     if (!dirtTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\dirt4.png.preview.jpg")) {
         std::cerr << "Could not load dirt texture\n";
@@ -51,7 +72,6 @@ Game::Game()
 
     setupMenu();
     setupWaves();
-    
 }
 
 void Game::updateMenuColors() {
@@ -93,23 +113,24 @@ void Game::handleMenuClick(sf::Vector2f mousePos) {
 
 void Game::applyDifficultySettings() {
     if (selectedDifficulty_ == Difficulty::Easy) {
-        baseHP_ = 20;
         gold_ = 250;
         spawnInterval_ = 1.2f;
+        castleMaxHP_ = 10;
+        castleHP_ = 10;
     }
     else if (selectedDifficulty_ == Difficulty::Medium) {
-        baseHP_ = 15;
         gold_ = 200;
         spawnInterval_ = 0.9f;
+        castleMaxHP_ = 8;
+        castleHP_ = 8;
     }
     else if (selectedDifficulty_ == Difficulty::Hard) {
-        baseHP_ = 10;
         gold_ = 150;
         spawnInterval_ = 0.7f;
+        castleMaxHP_ = 6;
+        castleHP_ = 6;
     }
 }
-
-
 
 void Game::drawMenu() {
     window_.draw(*menuTitle_);
@@ -143,6 +164,7 @@ void Game::run() {
         window_.display();
     }
 }
+
 void Game::setupWaves() {
     waves_ = {
         {3, 0, 0, 2},
@@ -156,6 +178,7 @@ void Game::setupWaves() {
 void Game::startLevel(int level) {
     if (level > maxLevels_) {
         victory_ = true;
+        state_ = GameState::Victory;
         levelInProgress_ = false;
         return;
     }
@@ -218,8 +241,6 @@ void Game::checkLevelFinished() {
     bool anyEnemyAlive = false;
 
     for (const auto& obj : objects_) {
-        // jeśli masz klasę Enemy dziedziczącą po GameObject
-        // to ten fragment będzie dobry:
         Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
         if (enemy && enemy->isActive()) {
             anyEnemyAlive = true;
@@ -229,7 +250,8 @@ void Game::checkLevelFinished() {
 
     if (levelInProgress_ && enemiesToSpawn_ == 0 && !anyEnemyAlive) {
         levelInProgress_ = false;
-        startLevel(currentLevel_ + 1);
+        betweenLevels_ = true;
+        levelPauseTimer_ = levelPauseDuration_;
     }
 }
 
@@ -304,3 +326,4 @@ void Game::setupMenu() {
 
     updateMenuColors();
 }
+

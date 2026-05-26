@@ -9,6 +9,16 @@ void Game::update(float dt) {
     if (gameOver_ || victory_) {
         return;
     }
+    if (betweenLevels_) {
+    levelPauseTimer_ -= dt;
+
+    if (levelPauseTimer_ <= 0.f) {
+        betweenLevels_ = false;
+        startLevel(currentLevel_ + 1);
+    }
+
+    return;
+}
 
     if (levelInProgress_ && enemiesToSpawn_ > 0) {
         spawnTimer_ += dt;
@@ -56,13 +66,15 @@ void Game::update(float dt) {
         Enemy* e = dynamic_cast<Enemy*>(it->get());
 
         if (e && e->isActive() && e->reachedGoal()) {
-            e->deactivate();
-            --baseHP_;
+        e->deactivate();
+        --castleHP_;
 
-            if (baseHP_ <= 0) {
-                gameOver_ = true;
-            }
-        }
+        if (castleHP_ <= 0) {
+        castleHP_ = 0;
+        gameOver_ = true;
+        state_ = GameState::GameOver;
+    }
+    }
 
         if (!(*it)->isActive()) {
             if (e && !e->reachedGoal()) {

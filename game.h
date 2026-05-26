@@ -49,7 +49,17 @@ private:
     std::unique_ptr<sf::Text> hardText_;
     std::unique_ptr<sf::Text> startText_;
 
-    int baseHP_;
+        int castleHP_ = 10;
+    int castleMaxHP_ = 10;
+
+    bool betweenLevels_ = false;
+    float levelPauseTimer_ = 0.f;
+    float levelPauseDuration_ = 2.5f;
+
+    sf::Texture castleTexture_;
+   std::unique_ptr<sf::Sprite> castleSprite_;
+
+    
     int gold_ = 0;
     int currentLevel_ = 1;
     int maxLevels_ = 5;
@@ -117,4 +127,5 @@ private:
     sf::Vector2f tileCenter(int col, int row) const;
     bool canPlaceTower(int col, int row) const;
     void placeDraggedTower(int col, int row);
+    void drawCastleHP();
 };
