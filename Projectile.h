@@ -1,23 +1,22 @@
 #pragma once
 #include "GameObject.h"
-#include "Enemy.h"
 #include <SFML/Graphics.hpp>
 
 class Projectile : public GameObject {
 private:
-    Enemy* target_;
+    sf::Vector2f velocity_;
     int damage_;
-    float speed_;
+    float lifetime_ = 2.0f;
     sf::CircleShape shape_;
     bool active_ = true;
 
 public:
-    Projectile(sf::Vector2f start, Enemy* target, int damage, float speed);
+    Projectile(sf::Vector2f start, sf::Vector2f targetPos, int damage, float speed);
 
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
     sf::FloatRect getBounds() const override;
-    void hitTarget();
     int getDamage() const;
-     bool isActive() const override { return active_; }
+    void deactivate() { active_ = false; }
+    bool isActive() const override { return active_; }
 };

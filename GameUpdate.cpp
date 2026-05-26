@@ -25,10 +25,30 @@ void Game::update(float dt) {
         }
     }
 
-    for (auto& obj : objects_) {
-        Tower* tower = dynamic_cast<Tower*>(obj.get());
+    std::size_t objectCount = objects_.size();
+
+    for (std::size_t i = 0; i < objectCount; ++i) {
+        Tower* tower = dynamic_cast<Tower*>(objects_[i].get());
         if (tower && tower->isActive()) {
             tower->attack(objects_);
+        }
+    }
+
+    for (auto& obj : objects_) {
+        Projectile* projectile = dynamic_cast<Projectile*>(obj.get());
+        if (!projectile || !projectile->isActive())
+            continue;
+
+        for (auto& other : objects_) {
+            Enemy* enemy = dynamic_cast<Enemy*>(other.get());
+            if (!enemy || !enemy->isActive())
+                continue;
+
+            if (projectile->getBounds().findIntersection(enemy->getBounds())) {
+                enemy->takeDamage(projectile->getDamage());
+                projectile->deactivate();
+                break;
+            }
         }
     }
 
@@ -57,4 +77,3 @@ void Game::update(float dt) {
 
     checkLevelFinished();
 }
-

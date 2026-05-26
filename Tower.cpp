@@ -75,20 +75,20 @@ Enemy* Tower::findTarget(const std::vector<std::unique_ptr<GameObject>>& objects
 // If cooldown is over and a target is found,
 // create a projectile that follows the enemy.
 void Tower::attack(std::vector<std::unique_ptr<GameObject>>& objects) {
-    // If the tower is still cooling down, do nothing.
     if (cooldownTimer_ > 0.f)
         return;
 
-    // Find a target.
     Enemy* target = findTarget(objects);
     if (!target)
         return;
 
-    // Create a projectile.
     objects.push_back(std::make_unique<Projectile>(
-        sf::Vector2f{x_, y_}, target, damage_, 340.f));
+        sf::Vector2f{x_, y_},
+        target->getPosition(),
+        damage_,
+        340.f
+    ));
 
-    // Reset cooldown after firing.
     cooldownTimer_ = cooldown_;
 }
 

@@ -1,34 +1,39 @@
 #include "Projectile.h"
 #include <cmath>
 
-Projectile::Projectile(sf::Vector2f start, Enemy* target, int damage, float speed)
-    : target_(target), damage_(damage), speed_(speed), shape_(6.f) {
+Projectile::Projectile(sf::Vector2f start, sf::Vector2f targetPos, int damage, float speed)
+    : damage_(damage), shape_(6.f) {
     x_ = start.x;
     y_ = start.y;
+
     shape_.setOrigin({6.f, 6.f});
     shape_.setFillColor(sf::Color::Yellow);
     shape_.setPosition({x_, y_});
+
+    sf::Vector2f dir = targetPos - start;
+    float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+
+    if (len > 0.f) {
+        dir /= len;
+        velocity_ = dir * speed;
+    } else {
+        velocity_ = {0.f, 0.f};
+        active_ = false;
+    }
 }
 
 void Projectile::update(float dt) {
-    if (!target_ || !target_->isActive()) {
-        active_ = false;
+    if (!active_)
         return;
-    }
 
-    sf::Vector2f targetPos = target_->getPosition();
-    sf::Vector2f dir = targetPos - sf::Vector2f{x_, y_};
-    float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-
-    if (len < 8.f) {
-        hitTarget();
-        return;
-    }
-
-    dir /= len;
-    x_ += dir.x * speed_ * dt;
-    y_ += dir.y * speed_ * dt;
+    x_ += velocity_.x * dt;
+    y_ += velocity_.y * dt;
     shape_.setPosition({x_, y_});
+
+    lifetime_ -= dt;
+    if (lifetime_ <= 0.f) {
+        active_ = false;
+    }
 }
 
 void Projectile::draw(sf::RenderWindow& window) {
@@ -37,13 +42,6 @@ void Projectile::draw(sf::RenderWindow& window) {
 
 sf::FloatRect Projectile::getBounds() const {
     return shape_.getGlobalBounds();
-}
-
-void Projectile::hitTarget() {
-    if (target_ && target_->isActive()) {
-        target_->takeDamage(damage_); // albo inna logika zadawania obrażeń
-    }
-    active_ = false;
 }
 
 int Projectile::getDamage() const {

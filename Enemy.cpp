@@ -341,7 +341,7 @@ void Enemy::drawHealthBar(sf::RenderWindow& window) {
     float barWidth = 40.f;
     float barHeight = 5.f;
 
-    float ratio = hp_ / maxHp_;
+   float ratio = static_cast<float>(hp_) / static_cast<float>(maxHp_);
     if (ratio < 0.f) ratio = 0.f;
 
     sf::FloatRect bounds = getBounds();
