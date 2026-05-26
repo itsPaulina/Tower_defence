@@ -175,7 +175,7 @@ sf::FloatRect Slime::getBounds() const {
 // ========================= GOBLIN =========================
 
 Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(80, 70.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f),
+    : Enemy(120, 70.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f),
       sprite_(texture_)
 {
     if (texture_.getSize().x == 0) {

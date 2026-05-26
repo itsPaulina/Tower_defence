@@ -8,21 +8,10 @@ void Game::handleEvents() {
         }
 
         if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>()) {
-            if (mb->button == sf::Mouse::Button::Left) {
-                sf::Vector2f mousePos(
-                    static_cast<float>(mb->position.x),
-                    static_cast<float>(mb->position.y)
-                );
-
-                if (state_ == GameState::Menu) {
-                    handleMenuClick(mousePos);
-                } else {
-                    handleMousePressed(*mb);
-                }
-            }
+            handleMousePressed(*mb);
         }
 
-        if (state_ != GameState::Menu) {
+        if (state_ == GameState::Playing) {
             if (const auto* mm = event->getIf<sf::Event::MouseMoved>()) {
                 handleMouseMoved(*mm);
             }
@@ -43,6 +32,20 @@ void Game::handleMousePressed(const sf::Event::MouseButtonPressed& mb) {
         static_cast<float>(mb.position.x),
         static_cast<float>(mb.position.y)
     );
+
+    if (state_ == GameState::MainMenu) {
+        handleMainMenuClick(mousePos);
+        return;
+    }
+
+    if (state_ == GameState::DifficultyMenu) {
+        handleMenuClick(mousePos);
+        return;
+    }
+
+    if (state_ != GameState::Playing) {
+        return;
+    }
 
     if (towerMenu_.clickedCatapult(mousePos)) {
         towerMenu_.startDragging(TowerType::Catapult);

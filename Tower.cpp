@@ -94,7 +94,7 @@ void Tower::attack(std::vector<std::unique_ptr<GameObject>>& objects) {
 
 // Catapult tower with its own stats.
 Catapult::Catapult(sf::Vector2f pos)
-    : Tower(pos, 170.f, 20, 1.2f, sf::Color(160, 110, 60)) {}
+    : Tower(pos, 170.f, 20, 1.8f, sf::Color(160, 110, 60)) {}
 
 // Catapult update.
 // Uses the base Tower logic for now.
@@ -104,7 +104,7 @@ void Catapult::update(float dt) {
 
 // CannonTower with faster firing and longer range.
 CannonTower::CannonTower(sf::Vector2f pos)
-    : Tower(pos, 210.f, 14, 0.55f, sf::Color(70, 130, 255)) {}
+    : Tower(pos, 210.f, 14, 0.9f, sf::Color(70, 130, 255)) {}
 
 // CannonTower update.
 void CannonTower::update(float dt) {
@@ -113,7 +113,7 @@ void CannonTower::update(float dt) {
 
 // Tank tower: slow but powerful.
 Tank::Tank(sf::Vector2f pos)
-    : Tower(pos, 120.f, 40, 1.8f, sf::Color(170, 60, 60)) {}
+    : Tower(pos, 120.f, 40, 2.4f, sf::Color(170, 60, 60)) {}
 
 // Tank update.
 void Tank::update(float dt) {

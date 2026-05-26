@@ -13,12 +13,12 @@ Game::Game()
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
    path_ = {
-    {0,4},{1,4},{2,4},{3,4},{4,4},{5,4},{6,4},{7,4},{8,4},
-    {8,5},{8,6},{8,7},
-    {7,7},{6,7},{5,7},{4,7},{3,7},
-    {3,8},{3,9},
+    {0,3},{1,3},{2,3},{3,3},{4,3},{5,3},{6,3},{7,3},{8,3},
+    {8,4},{8,5},{8,6},
+    {7,6},{6,6},{5,6},{4,6},{3,6},
+    {3,7},{3,8},{3,9},
     {4,9},{5,9},{6,9},{7,9},{8,9},{9,9},{10,9},{11,9},{12,9},{13,9},{14,9},
-    {14,8},{14,7},{14,6},{14,5}
+    {14,8},{14,7},{14,6},{14,5},{14,4}
 };
 
     if (!grassTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\grass.png")) {
@@ -71,6 +71,7 @@ else {
     towerMenu_.setup(window_, catapultTexture_, cannonTexture_, tankTexture_);
 
     setupMenu();
+    setupMainMenu();
     setupWaves();
 }
 
@@ -113,19 +114,19 @@ void Game::handleMenuClick(sf::Vector2f mousePos) {
 
 void Game::applyDifficultySettings() {
     if (selectedDifficulty_ == Difficulty::Easy) {
-        gold_ = 250;
+        gold_ = 180;
         spawnInterval_ = 1.2f;
         castleMaxHP_ = 10;
         castleHP_ = 10;
     }
     else if (selectedDifficulty_ == Difficulty::Medium) {
-        gold_ = 200;
+        gold_ = 110;
         spawnInterval_ = 0.9f;
         castleMaxHP_ = 8;
         castleHP_ = 8;
     }
     else if (selectedDifficulty_ == Difficulty::Hard) {
-        gold_ = 150;
+        gold_ = 80;
         spawnInterval_ = 0.7f;
         castleMaxHP_ = 6;
         castleHP_ = 6;
@@ -143,14 +144,36 @@ void Game::drawMenu() {
     window_.draw(*hardText_);
     window_.draw(*startText_);
 }
+void Game::drawMainMenu() {
+    window_.draw(*mainTitle_);
+    window_.draw(mainStartButton_);
+    window_.draw(exitButton_);
+    window_.draw(*mainStartText_);
+    window_.draw(*exitText_);
+}
 
+void Game::handleMainMenuClick(sf::Vector2f mousePos) {
+    if (mainStartButton_.getGlobalBounds().contains(mousePos)) {
+        state_ = GameState::DifficultyMenu;
+    }
+    else if (exitButton_.getGlobalBounds().contains(mousePos)) {
+        window_.close();
+    }
+}
 void Game::run() {
     while (window_.isOpen()) {
         handleEvents();
 
         float dt = deltaClock_.restart().asSeconds();
 
-        if (state_ == GameState::Menu) {
+        if (state_ == GameState::MainMenu) {
+            window_.clear(sf::Color(40, 40, 60));
+            drawMainMenu();
+            window_.display();
+            continue;
+        }
+
+        if (state_ == GameState::DifficultyMenu) {
             window_.clear(sf::Color(40, 40, 60));
             drawMenu();
             window_.display();
@@ -254,6 +277,51 @@ void Game::checkLevelFinished() {
         levelPauseTimer_ = levelPauseDuration_;
     }
 }
+void Game::setupMainMenu() {
+    const float centerX = static_cast<float>(window_.getSize().x) / 2.f;
+
+    mainTitle_ = std::make_unique<sf::Text>(font_, "Tower Defense", 56);
+    mainStartText_ = std::make_unique<sf::Text>(font_, "Start", 30);
+    exitText_ = std::make_unique<sf::Text>(font_, "Exit", 30);
+
+    mainStartButton_.setSize({220.f, 70.f});
+    exitButton_.setSize({220.f, 70.f});
+
+    mainStartButton_.setPosition({centerX - 110.f, 280.f});
+    exitButton_.setPosition({centerX - 110.f, 390.f});
+
+    mainStartButton_.setFillColor(sf::Color(70, 130, 70));
+    exitButton_.setFillColor(sf::Color(140, 60, 60));
+
+    mainTitle_->setFillColor(sf::Color::White);
+    mainStartText_->setFillColor(sf::Color::White);
+    exitText_->setFillColor(sf::Color::White);
+
+    sf::FloatRect titleBounds = mainTitle_->getLocalBounds();
+    mainTitle_->setOrigin({
+        titleBounds.position.x + titleBounds.size.x / 2.f,
+        titleBounds.position.y + titleBounds.size.y / 2.f
+    });
+    mainTitle_->setPosition({centerX, 170.f});
+
+    auto centerTextInButton = [](sf::Text& text, const sf::RectangleShape& button) {
+        sf::FloatRect textBounds = text.getLocalBounds();
+        sf::FloatRect buttonBounds = button.getGlobalBounds();
+
+        text.setOrigin({
+            textBounds.position.x + textBounds.size.x / 2.f,
+            textBounds.position.y + textBounds.size.y / 2.f
+        });
+
+        text.setPosition({
+            buttonBounds.position.x + buttonBounds.size.x / 2.f,
+            buttonBounds.position.y + buttonBounds.size.y / 2.f
+        });
+    };
+
+    centerTextInButton(*mainStartText_, mainStartButton_);
+    centerTextInButton(*exitText_, exitButton_);
+}
 
 void Game::setupMenu() {
     if (!font_.openFromFile("C:\\Users\\spaul\\Desktop\\Inter_18pt-BlackItalic.ttf")) {
@@ -318,6 +386,7 @@ void Game::setupMenu() {
             buttonBounds.position.y + buttonBounds.size.y / 2.f
         });
     };
+    
 
     centerTextInButton(*easyText_, easyButton_);
     centerTextInButton(*mediumText_, mediumButton_);

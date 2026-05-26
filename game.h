@@ -13,7 +13,8 @@ enum class Difficulty {
 };
 
 enum class GameState {
-    Menu,
+    MainMenu,
+    DifficultyMenu,
     Playing,
     GameOver,
     Victory
@@ -32,7 +33,7 @@ private:
         int towerLimit;
     };
 
-    GameState state_ = GameState::Menu;
+    GameState state_ = GameState::MainMenu;
     Difficulty selectedDifficulty_ = Difficulty::Medium;
 
     sf::RenderWindow window_;
@@ -48,6 +49,13 @@ private:
     std::unique_ptr<sf::Text> mediumText_;
     std::unique_ptr<sf::Text> hardText_;
     std::unique_ptr<sf::Text> startText_;
+
+    sf::RectangleShape mainStartButton_;
+    sf::RectangleShape exitButton_;
+
+    std::unique_ptr<sf::Text> mainTitle_;
+    std::unique_ptr<sf::Text> mainStartText_;
+    std::unique_ptr<sf::Text> exitText_;
 
         int castleHP_ = 10;
     int castleMaxHP_ = 10;
@@ -128,4 +136,8 @@ private:
     bool canPlaceTower(int col, int row) const;
     void placeDraggedTower(int col, int row);
     void drawCastleHP();
+
+    void setupMainMenu();
+    void drawMainMenu();
+    void handleMainMenuClick(sf::Vector2f mousePos);
 };
