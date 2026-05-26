@@ -6,20 +6,30 @@ void Game::handleEvents() {
         if (event->is<sf::Event::Closed>()) {
             window_.close();
         }
-         if (inMenu_) {
-            continue;
-        }
 
         if (const auto* mb = event->getIf<sf::Event::MouseButtonPressed>()) {
-            handleMousePressed(*mb);
+            if (mb->button == sf::Mouse::Button::Left) {
+                sf::Vector2f mousePos(
+                    static_cast<float>(mb->position.x),
+                    static_cast<float>(mb->position.y)
+                );
+
+                if (state_ == GameState::Menu) {
+                    handleMenuClick(mousePos);
+                } else {
+                    handleMousePressed(*mb);
+                }
+            }
         }
 
-        if (const auto* mm = event->getIf<sf::Event::MouseMoved>()) {
-            handleMouseMoved(*mm);
-        }
+        if (state_ != GameState::Menu) {
+            if (const auto* mm = event->getIf<sf::Event::MouseMoved>()) {
+                handleMouseMoved(*mm);
+            }
 
-        if (const auto* mr = event->getIf<sf::Event::MouseButtonReleased>()) {
-            handleMouseReleased(*mr);
+            if (const auto* mr = event->getIf<sf::Event::MouseButtonReleased>()) {
+                handleMouseReleased(*mr);
+            }
         }
     }
 }

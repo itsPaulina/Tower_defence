@@ -2,8 +2,22 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include <optional>
 #include "GameObject.h"
 #include "TowerMenu.h"
+
+enum class Difficulty {
+    Easy,
+    Medium,
+    Hard
+};
+
+enum class GameState {
+    Menu,
+    Playing,
+    GameOver,
+    Victory
+};
 
 class Game {
 public:
@@ -18,9 +32,22 @@ private:
         int towerLimit;
     };
 
+    GameState state_ = GameState::Menu;
+    Difficulty selectedDifficulty_ = Difficulty::Medium;
+
     sf::RenderWindow window_;
-    bool inMenu_ = true;
     sf::Font font_;
+
+    sf::RectangleShape easyButton_;
+    sf::RectangleShape mediumButton_;
+    sf::RectangleShape hardButton_;
+    sf::RectangleShape startButton_;
+
+        std::unique_ptr<sf::Text> menuTitle_;
+    std::unique_ptr<sf::Text> easyText_;
+    std::unique_ptr<sf::Text> mediumText_;
+    std::unique_ptr<sf::Text> hardText_;
+    std::unique_ptr<sf::Text> startText_;
 
     int baseHP_;
     int gold_ = 0;
@@ -62,6 +89,10 @@ private:
     TowerMenu towerMenu_;
 
     void setupMenu();
+    void updateMenuColors();
+    void handleMenuClick(sf::Vector2f mousePos);
+    void applyDifficultySettings();
+
     void updateMenu();
     void drawMenu();
 
