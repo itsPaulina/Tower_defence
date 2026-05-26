@@ -11,6 +11,7 @@ protected:
     float speed_;
     int reward_;
     bool active_ = true;
+    
 
     Animation animation_;
     std::vector<sf::Vector2i> path_;

@@ -92,7 +92,7 @@ int Enemy::getHp() const {
 // ========================= SLIME =========================
 
 Slime::Slime(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(30, 70.f, 10, path, tileSize, sf::Color::White, 16.f),
+    : Enemy(45, 50.f, 10, path, tileSize, sf::Color::White, 16.f),
       sprite_(texture_) 
 {
     if (texture_.getSize().x == 0) {
@@ -175,7 +175,7 @@ sf::FloatRect Slime::getBounds() const {
 // ========================= GOBLIN =========================
 
 Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(55, 100.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f),
+    : Enemy(80, 70.f, 15, path, tileSize, sf::Color(120, 200, 40), 18.f),
       sprite_(texture_)
 {
     if (texture_.getSize().x == 0) {
@@ -257,7 +257,7 @@ sf::FloatRect Goblin::getBounds() const {
 // ========================= WOLF =========================
 
 Wolf::Wolf(const std::vector<sf::Vector2i>& path, float tileSize)
-    : Enemy(90, 135.f, 20, path, tileSize, sf::Color::White, 20.f),
+    : Enemy(130, 90.f, 20, path, tileSize, sf::Color::White, 20.f),
       sprite_(texture_)
 {
     if (texture_.getSize().x == 0) {

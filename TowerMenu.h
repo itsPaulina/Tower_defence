@@ -37,6 +37,8 @@ public:
 private:
     float menuWidth_ = 180.f;
 
+    sf::Font font_;
+    
     sf::RectangleShape menuBackground_;
     sf::RectangleShape catapultButton_;
     sf::RectangleShape cannonButton_;

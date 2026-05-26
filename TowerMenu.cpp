@@ -1,4 +1,5 @@
 #include "TowerMenu.h"
+#include <iostream>
 
 TowerMenu::TowerMenu() {
 }
@@ -11,6 +12,10 @@ void TowerMenu::setup(const sf::RenderWindow& window,
     cannonTexture_ = &cannonTexture;
     tankTexture_ = &tankTexture;
 
+    if (!font_.openFromFile("C:\\Users\\spaul\\Desktop\\Inter_18pt-BlackItalic.ttf")) {
+        std::cerr << "Could not load font for TowerMenu\n";
+    }
+    
     const sf::Vector2f towerSize(64.f, 64.f);
 
     menuBackground_.setSize({menuWidth_, static_cast<float>(window.getSize().y)});
@@ -44,6 +49,31 @@ void TowerMenu::draw(sf::RenderWindow& window) {
     window.draw(catapultButton_);
     window.draw(cannonButton_);
     window.draw(tankButton_);
+
+    sf::Text catapultPrice(font_, "40 gold", 18);
+    catapultPrice.setFillColor(sf::Color::Yellow);
+    catapultPrice.setPosition({
+        catapultButton_.getPosition().x + 8.f,
+        catapultButton_.getPosition().y + catapultButton_.getSize().y + 6.f
+    });
+
+    sf::Text cannonPrice(font_, "60 gold", 18);
+    cannonPrice.setFillColor(sf::Color::Yellow);
+    cannonPrice.setPosition({
+        cannonButton_.getPosition().x + 8.f,
+        cannonButton_.getPosition().y + cannonButton_.getSize().y + 6.f
+    });
+
+    sf::Text tankPrice(font_, "80 gold", 18);
+    tankPrice.setFillColor(sf::Color::Yellow);
+    tankPrice.setPosition({
+        tankButton_.getPosition().x + 8.f,
+        tankButton_.getPosition().y + tankButton_.getSize().y + 6.f
+    });
+
+    window.draw(catapultPrice);
+    window.draw(cannonPrice);
+    window.draw(tankPrice);
 
     if (isDragging_) {
         window.draw(dragPreview_);

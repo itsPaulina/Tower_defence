@@ -8,7 +8,7 @@
 
 Game::Game()
     : window_(sf::VideoMode({1280, 720}), "Tower Defense"),
-      money_(200),
+      gold_(60),
       baseHP_(10),
       tileSize_(64.f),
       cols_(1280 / 64),

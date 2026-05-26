@@ -22,9 +22,7 @@ private:
     bool inMenu_ = true;
     sf::Font font_;
 
-    int money_;
     int baseHP_;
-
     int gold_ = 0;
     int currentLevel_ = 1;
     int maxLevels_ = 5;

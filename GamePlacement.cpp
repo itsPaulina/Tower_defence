@@ -60,7 +60,7 @@ void Game::placeDraggedTower(int col, int row) {
         return;
     }
 
-    if (money_ < cost) {
+    if (gold_ < cost) {
         return;
     }
 
@@ -89,6 +89,6 @@ void Game::placeDraggedTower(int col, int row) {
         return;
     }
 
-    money_ -= cost;
+    gold_ -= cost;
     occupiedTiles_.push_back({col, row});
 }
