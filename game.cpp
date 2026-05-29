@@ -21,13 +21,13 @@ Game::Game()
     {14,8},{14,7},{14,6},{14,5},{14,4}
 };
 
-    if (!grassTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\grass.png")) {
+    if (!grassTexture_.loadFromFile("photos/grass.png")) {
         std::cerr << "Could not load grass.png\n";
     } else {
         grassTexture_.setRepeated(true);
     }
 
-    if (!castleTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\tower.png")) {
+    if (!castleTexture_.loadFromFile("photos/tower.png")) {
     std::cerr << "Could not load tower.png\n";
 }
 else {
@@ -50,21 +50,21 @@ else {
     castleSprite_->setPosition(castlePos);
 }
 
-    if (!dirtTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\dirt4.png.preview.jpg")) {
+    if (!dirtTexture_.loadFromFile("photos/dirt4.png.preview.jpg")) {
         std::cerr << "Could not load dirt texture\n";
     } else {
         dirtTexture_.setRepeated(true);
     }
 
-    if (!catapultTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\catapult.png")) {
+    if (!catapultTexture_.loadFromFile("photos/catapult.png")) {
         std::cerr << "Could not load catapult.png\n";
     }
 
-    if (!cannonTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\cannon.png")) {
+    if (!cannonTexture_.loadFromFile("photos/cannon.png")) {
         std::cerr << "Could not load cannon.png\n";
     }
 
-    if (!tankTexture_.loadFromFile("C:\\Users\\spaul\\Desktop\\tank.png")) {
+    if (!tankTexture_.loadFromFile("photos/tank.png")) {
         std::cerr << "Could not load tank.png\n";
     }
 

@@ -96,7 +96,7 @@ Slime::Slime(const std::vector<sf::Vector2i>& path, float tileSize)
       sprite_(texture_) 
 {
     if (texture_.getSize().x == 0) {
-        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\slime.png")) {
+        if (!texture_.loadFromFile("photos/slime.png")) {
             std::cerr << "Could not load slime.png\n";
         }
     }
@@ -179,7 +179,7 @@ Goblin::Goblin(const std::vector<sf::Vector2i>& path, float tileSize)
       sprite_(texture_)
 {
     if (texture_.getSize().x == 0) {
-        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\gob.png")) {
+        if (!texture_.loadFromFile("photos/gob.png")) {
             std::cerr << "Could not load gob.png\n";
         }
     }
@@ -261,7 +261,7 @@ Wolf::Wolf(const std::vector<sf::Vector2i>& path, float tileSize)
       sprite_(texture_)
 {
     if (texture_.getSize().x == 0) {
-        if (!texture_.loadFromFile("C:\\Users\\spaul\\Desktop\\wolf.png")) {
+        if (!texture_.loadFromFile("photos/wolf.png")) {
             std::cerr << "Could not load wolf.png\n";
         }
     }

@@ -12,7 +12,7 @@ void TowerMenu::setup(const sf::RenderWindow& window,
     cannonTexture_ = &cannonTexture;
     tankTexture_ = &tankTexture;
 
-    if (!font_.openFromFile("C:\\Users\\spaul\\Desktop\\Inter_18pt-BlackItalic.ttf")) {
+    if (!font_.openFromFile("photos/Inter_18pt-BlackItalic.ttf")) {
         std::cerr << "Could not load font for TowerMenu\n";
     }
     
