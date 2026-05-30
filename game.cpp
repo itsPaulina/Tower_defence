@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Enemy.h"
 
+
 Game::Game()
     : window_(sf::VideoMode({1280, 720}), "Tower Defense"),
       gold_(60),
@@ -73,6 +74,14 @@ else {
     setupMenu();
     setupMainMenu();
     setupWaves();
+
+    if (!backgroundMusic_.openFromFile("photos/music.ogg")) {
+    std::cerr << "Could not load background.ogg\n";
+} else {
+    backgroundMusic_.setLooping(true);
+    backgroundMusic_.setVolume(50.f);
+    backgroundMusic_.play();
+}
 }
 
 void Game::updateMenuColors() {

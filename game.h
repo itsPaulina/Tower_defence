@@ -5,6 +5,8 @@
 #include <optional>
 #include "GameObject.h"
 #include "TowerMenu.h"
+#include <SFML/Audio.hpp> 
+
 
 enum class Difficulty {
     Easy,
@@ -33,11 +35,13 @@ private:
         int towerLimit;
     };
 
+    sf::Music backgroundMusic_;
     GameState state_ = GameState::MainMenu;
     Difficulty selectedDifficulty_ = Difficulty::Medium;
 
     sf::RenderWindow window_;
     sf::Font font_;
+    sf::Music music;
 
     sf::RectangleShape easyButton_;
     sf::RectangleShape mediumButton_;
