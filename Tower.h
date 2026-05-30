@@ -1,7 +1,9 @@
 #pragma once
+
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Projectile.h"
+
 #include <vector>
 #include <memory>
 
@@ -16,7 +18,7 @@ public:
     void setTexture(const sf::Texture* texture);
 
     Enemy* findTarget(const std::vector<std::unique_ptr<GameObject>>& objects) const;
-    virtual void attack(std::vector<std::unique_ptr<GameObject>>& objects);
+    void attack(std::vector<std::unique_ptr<GameObject>>& objects);
 
    
     bool isActive() const override { return true; }
