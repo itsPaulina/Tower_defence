@@ -11,5 +11,8 @@ void Animation::update(float dt) {
     }
 }
 
-int Animation::getCurrentFrame() const { return currentFrame_; }
-void Animation::reset() { currentFrame_ = 0; timer_ = 0.f; }
+int Animation::getCurrentFrame() const { 
+    return currentFrame_; }
+void Animation::reset() { 
+    currentFrame_ = 0; 
+    timer_ = 0.f; }

@@ -29,13 +29,15 @@ void Game::update(float dt) {
         }
     }
 
-    for (auto& obj : objects_) {
-        if (obj->isActive()) {
-            obj->update(dt);
-        }
-    }
-
     std::size_t objectCount = objects_.size();
+
+for (std::size_t i = 0; i < objectCount; ++i) {
+    if (objects_[i]->isActive()) {
+        objects_[i]->update(dt);
+    }
+}
+
+    objectCount = objects_.size();
 
     for (std::size_t i = 0; i < objectCount; ++i) {
         Tower* tower = dynamic_cast<Tower*>(objects_[i].get());

@@ -8,7 +8,7 @@ private:
     int damage_;
     float lifetime_ = 2.0f;
     sf::CircleShape shape_;
-    bool active_ = true;
+   
 
 public:
     Projectile(sf::Vector2f start, sf::Vector2f targetPos, int damage, float speed);
@@ -17,6 +17,5 @@ public:
     void draw(sf::RenderWindow& window) override;
     sf::FloatRect getBounds() const override;
     int getDamage() const;
-    void deactivate() { active_ = false; }
-    bool isActive() const override { return active_; }
+    
 };

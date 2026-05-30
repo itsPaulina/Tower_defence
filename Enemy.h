@@ -10,17 +10,14 @@ protected:
     float maxHp_;
     float speed_;
     int reward_;
-    bool active_ = true;
-    
+   
 
     Animation animation_;
     std::vector<sf::Vector2i> path_;
     float tileSize_;
     size_t pathIndex_ = 0;
 
-    float x_ = 0.f;
-    float y_ = 0.f;
-
+    
     sf::CircleShape shape_;
 
     sf::Vector2f tileCenter(const sf::Vector2i& tile) const;
@@ -39,10 +36,7 @@ public:
     sf::FloatRect getBounds() const override;
 
     void takeDamage(int dmg);
-    sf::Vector2f getPosition() const;
-
-    bool isActive() const override { return active_; }
-    void deactivate() { active_ = false; }
+   
 
     bool reachedGoal() const;
     int getReward() const;

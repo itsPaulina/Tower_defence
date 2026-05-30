@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
-#include <optional>
 #include "GameObject.h"
 #include "TowerMenu.h"
 #include <SFML/Audio.hpp> 
@@ -41,7 +40,7 @@ private:
 
     sf::RenderWindow window_;
     sf::Font font_;
-    sf::Music music;
+    
 
     sf::RectangleShape easyButton_;
     sf::RectangleShape mediumButton_;
@@ -131,8 +130,7 @@ private:
     void startLevel(int level);
     void spawnNextEnemy();
     void checkLevelFinished();
-    int wave_ = 1;
-    int toSpawn_ = 0;
+    
 
     bool isPathTile(int col, int row) const;
     bool isTileOccupied(int col, int row) const;

@@ -90,5 +90,6 @@ void Game::placeDraggedTower(int col, int row) {
     }
 
     gold_ -= cost;
+    towersPlaced_++;
     occupiedTiles_.push_back({col, row});
 }

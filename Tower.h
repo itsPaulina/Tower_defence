@@ -18,8 +18,7 @@ public:
     Enemy* findTarget(const std::vector<std::unique_ptr<GameObject>>& objects) const;
     virtual void attack(std::vector<std::unique_ptr<GameObject>>& objects);
 
-    // TUTAJ DODAJEMY ROZWIĄZANIE:
-    // Wieża spełnia wymóg klasy GameObject i zawsze zwraca, że jest aktywna
+   
     bool isActive() const override { return true; }
 
 protected:
@@ -27,9 +26,7 @@ protected:
     int damage_;
     float cooldown_;
     float cooldownTimer_;
-    int catapultCost_ = 30;
-int cannonCost_ = 50;
-int tankCost_ = 80;
+   
 
 private:
     sf::RectangleShape shape_;

@@ -333,7 +333,7 @@ void Game::setupMainMenu() {
 }
 
 void Game::setupMenu() {
-    if (!font_.openFromFile("C:\\Users\\spaul\\Desktop\\Inter_18pt-BlackItalic.ttf")) {
+    if (!font_.openFromFile("photos/Inter_18pt-BlackItalic.ttf")) {
         std::cerr << "Could not load Inter_18pt-BlackItalic.ttf\n";
     }
 

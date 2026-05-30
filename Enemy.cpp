@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-// Rezerwacja pamięci dla tekstur statycznych komponentów klas
+
 sf::Texture Slime::texture_;
 sf::Texture Goblin::texture_;
 sf::Texture Wolf::texture_;
@@ -65,9 +65,7 @@ void Enemy::update(float dt) {
     moveAlongPath(dt);
 }
 
-sf::Vector2f Enemy::getPosition() const {
-    return {x_, y_};
-}
+
 
 void Enemy::draw(sf::RenderWindow& window) {
     window.draw(shape_);
