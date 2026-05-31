@@ -32,22 +32,22 @@ Game::Game()
         std::cerr << "Could not load tower.png\n";          // Print error if loading fails.
     }
     else {
-        castleSprite_ = std::make_unique<sf::Sprite>(castleTexture_); // Create castle sprite from texture.
+        castleSprite_ = std::make_unique<sf::Sprite>(castleTexture_); // Create pointer to castle sprite from texture.
 
-        sf::Vector2f scale(
-            180.f / static_cast<float>(castleTexture_.getSize().x), // Scale width to about 180 pixels.
-            180.f / static_cast<float>(castleTexture_.getSize().y)  // Scale height to about 180 pixels.
+        sf::Vector2f scale( // Calculate scale to make the castle about 180 pixels wide.
+            180.f / static_cast<float>(castleTexture_.getSize().x), // Scale width to about 180 pixels, by division we get the necessary scale factor.
+            180.f / static_cast<float>(castleTexture_.getSize().y)  // Scale height to about 180 pixels, same as width for a square sprite.
         );
         castleSprite_->setScale(scale); // Apply scale to the castle sprite.
 
-        sf::Vector2f origin(
+        sf::Vector2f origin( // Set origin to the center of the castle sprite for easier positioning.
             static_cast<float>(castleTexture_.getSize().x) * 0.5f, // Center origin in X.
             static_cast<float>(castleTexture_.getSize().y) * 0.5f  // Center origin in Y.
         );
         castleSprite_->setOrigin(origin); // Set sprite origin to its center.
 
         sf::Vector2i lastTile = path_.back();                  // Get the last tile of the enemy path.
-        sf::Vector2f castlePos = tileCenter(lastTile.x, lastTile.y - 1); // Place castle near the end of the path.
+        sf::Vector2f castlePos = tileCenter(lastTile.x, lastTile.y - 1); // Place castle near the end of the path 
         castleSprite_->setPosition(castlePos);                 // Set castle position.
     }
 
@@ -90,17 +90,17 @@ void Game::run() {
     while (window_.isOpen()) { // Main game loop runs while window is open.
         handleEvents();        // Process user input and window events.
 
-        float dt = deltaClock_.restart().asSeconds(); // Get elapsed time since last frame.
+        float dt = deltaClock_.restart().asSeconds(); // measure time since last frame for smooth movement and animations.
 
         if (state_ == GameState::MainMenu) {      // If game is in main menu state,
             window_.clear(sf::Color(40, 40, 60)); // clear the window with a dark color.
             drawMainMenu();                       // Draw main menu.
-            window_.display();                    // Show frame on screen.
-            continue;                            // Skip the rest of the loop.
+            window_.display();                    // Show frame on screen after drawing.
+            continue;                            // Skip the rest of the loop and start the next iteration, so we don't update or render the game world while in the menu.
         }
 
         if (state_ == GameState::DifficultyMenu) { // If game is in difficulty menu state,
-            window_.clear(sf::Color(40, 40, 60));  // clear the window.
+            window_.clear(sf::Color(40, 40, 60));  // clear the window for the menu.
             drawMenu();                            // Draw difficulty menu.
             window_.display();                     // Show frame.
             continue;                             // Skip update/render of gameplay.

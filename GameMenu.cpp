@@ -8,13 +8,13 @@ void Game::updateMenuColors() {
     hardButton_.setFillColor(sf::Color(180, 180, 180));   // Set default color for hard button.
 
     if (selectedDifficulty_ == Difficulty::Easy) { // Highlight easy if it is selected.
-        easyButton_.setFillColor(sf::Color(100, 220, 100));
+        easyButton_.setFillColor(sf::Color(100, 220, 100)); // A nice green color for easy difficulty.
     }
     else if (selectedDifficulty_ == Difficulty::Medium) { // Highlight medium if it is selected.
-        mediumButton_.setFillColor(sf::Color(255, 220, 100));
+        mediumButton_.setFillColor(sf::Color(255, 220, 100)); // A nice yellow color for medium difficulty.
     }
     else if (selectedDifficulty_ == Difficulty::Hard) { // Highlight hard if it is selected.
-        hardButton_.setFillColor(sf::Color(220, 100, 100));
+        hardButton_.setFillColor(sf::Color(220, 100, 100)); // A nice red color for hard difficulty.
     }
 }
 
@@ -43,7 +43,7 @@ void Game::handleMenuClick(sf::Vector2f mousePos) {
 
 void Game::applyDifficultySettings() {
     if (selectedDifficulty_ == Difficulty::Easy) { // Settings for easy mode.
-        gold_ = 180;         // More starting gold.
+        gold_ = 150;         // More starting gold.
         spawnInterval_ = 1.2f; // Slower enemy spawning.
         castleMaxHP_ = 10;   // More castle health.
         castleHP_ = 10;      // Reset current castle health.
@@ -55,10 +55,10 @@ void Game::applyDifficultySettings() {
         castleHP_ = 8;
     }
     else if (selectedDifficulty_ == Difficulty::Hard) { // Settings for hard mode.
-        gold_ = 80;          // Less starting gold.
-        spawnInterval_ = 0.7f; // Faster enemy spawning.
-        castleMaxHP_ = 6;    // Lower castle health.
-        castleHP_ = 6;       // Reset current castle health.
+        gold_ = 90;          // Less starting gold.
+        spawnInterval_ = 0.8f; // Faster enemy spawning.
+        castleMaxHP_ = 7;    // Lower castle health.
+        castleHP_ = 7;       // Reset current castle health.
     }
 }
 
@@ -153,15 +153,15 @@ void Game::setupMenu() {
     const float gap = 30.f; // Gap between difficulty buttons.
 
     const float totalWidth = diffButtonSize.x * 3.f + gap * 2.f; // Total width of all difficulty buttons plus gaps.
-    const float startX = centerX - totalWidth / 2.f; // Starting X so buttons are centered.
-    const float buttonsY = 280.f; // Y position for difficulty buttons.
+    const float startX = centerX - totalWidth / 2.f; // Position of the first button to center the group of buttons.
+    const float buttonsY = 280.f; // Y position for difficulty buttons, i know this is a magic number but it works well for the layout.
 
-    menuTitle_ = std::make_unique<sf::Text>(font_, "Choose difficulty level", 40); // Create menu title.
+    menuTitle_ = std::make_unique<sf::Text>(font_, "Choose difficulty level", 40); // Create menu title, 40 is the font size.
     {
-        sf::FloatRect bounds = menuTitle_->getLocalBounds(); // Get title bounds.
+        sf::FloatRect bounds = menuTitle_->getLocalBounds(); // Get title bounds for centering.
         menuTitle_->setOrigin({
-            bounds.position.x + bounds.size.x / 2.f, // Center origin in X.
-            bounds.position.y + bounds.size.y / 2.f  // Center origin in Y.
+            bounds.position.x + bounds.size.x / 2.f, // Center origin of title in X.
+            bounds.position.y + bounds.size.y / 2.f  // Center origin of title in Y.
         });
     }
     menuTitle_->setFillColor(sf::Color::White); // Set title color.
@@ -190,18 +190,18 @@ void Game::setupMenu() {
     hardText_->setFillColor(sf::Color::Black);   // Set hard text color.
     startText_->setFillColor(sf::Color::White);  // Set start text color.
 
-    auto centerTextInButton = [](sf::Text& text, const sf::RectangleShape& button) { // Helper lambda for centering text.
+    auto centerTextInButton = [](sf::Text& text, const sf::RectangleShape& button) { // Helper lambda for centering text, to avoid repeating the same code for each button.
         sf::FloatRect textBounds = text.getLocalBounds();    // Get text bounds.
         sf::FloatRect buttonBounds = button.getGlobalBounds(); // Get button bounds.
 
         text.setOrigin({
-            textBounds.position.x + textBounds.size.x / 2.f, // Center origin in X.
-            textBounds.position.y + textBounds.size.y / 2.f  // Center origin in Y.
+            textBounds.position.x + textBounds.size.x / 2.f, // Center origin in X for text.
+            textBounds.position.y + textBounds.size.y / 2.f  // Center origin in Y for text.
         });
 
         text.setPosition({
-            buttonBounds.position.x + buttonBounds.size.x / 2.f, // Center text horizontally.
-            buttonBounds.position.y + buttonBounds.size.y / 2.f  // Center text vertically.
+            buttonBounds.position.x + buttonBounds.size.x / 2.f, // Center text horizontally, places the text in the middle of the button in X.
+            buttonBounds.position.y + buttonBounds.size.y / 2.f  // Center text vertically, places the text in the middle of the button in Y.
         });
     };
     
@@ -210,5 +210,5 @@ void Game::setupMenu() {
     centerTextInButton(*hardText_, hardButton_);     // Center hard label.
     centerTextInButton(*startText_, startButton_);   // Center start label.
 
-    updateMenuColors(); // Apply initial difficulty button colors.
+    updateMenuColors(); // Apply initial difficulty button colors (red for hard, etc).
 }

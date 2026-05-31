@@ -14,7 +14,7 @@ void Game::update(float dt) {
     if (betweenLevels_) { // Handle pause between levels.
         levelPauseTimer_ -= dt; // Reduce pause timer by elapsed time.
 
-        if (levelPauseTimer_ <= 0.f) { // When pause is over,
+        if (levelPauseTimer_ <= 0.f) { // When pause is over, start the next level.
             betweenLevels_ = false;    // leave pause state
             startLevel(currentLevel_ + 1); // and start the next level.
         }
@@ -31,11 +31,11 @@ void Game::update(float dt) {
         }
     }
 
-    std::size_t objectCount = objects_.size(); // Save object count before updating.
+    std::size_t objectCount = objects_.size(); // Save object count before updating, it's possible that new objects are added during update.
 
     for (std::size_t i = 0; i < objectCount; ++i) {
         if (objects_[i]->isActive()) { // Update only active objects.
-            objects_[i]->update(dt);
+            objects_[i]->update(dt); // Update object logic, which may include movement, animation, or other behavior. This calls the appropriate update function for each object type due to polymorphism.
         }
     }
 

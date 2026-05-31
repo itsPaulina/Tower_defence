@@ -38,9 +38,9 @@ void Game::startLevel(int level) {
         wolfBonus = 1;
     }
     else if (selectedDifficulty_ == Difficulty::Hard) { // Hard difficulty adjustments.
-        slimeBonus = 4;
-        goblinBonus = 2;
-        wolfBonus = 2;
+        slimeBonus = 1;
+        goblinBonus = 1;
+        wolfBonus = 1;
     }
 
     slimesLeftToSpawn_ = wave.slimes + slimeBonus;   // Set total slimes to spawn.
@@ -58,21 +58,21 @@ void Game::startLevel(int level) {
 
 void Game::spawnNextEnemy() {
     if (slimesLeftToSpawn_ > 0) { // Spawn slime first if any are left.
-        objects_.push_back(std::make_unique<Slime>(path_, tileSize_)); // Add a new Slime object.
+        objects_.push_back(std::make_unique<Slime>(path_, tileSize_)); // Add a new Slime object on the heap and store it in the objects vector.
         slimesLeftToSpawn_--;  // Decrease slime count.
         enemiesToSpawn_--;     // Decrease total enemies left to spawn.
         return;
     }
 
     if (goblinsLeftToSpawn_ > 0) { // If no slimes are left, try spawning goblin.
-        objects_.push_back(std::make_unique<Goblin>(path_, tileSize_)); // Add a new Goblin object.
+        objects_.push_back(std::make_unique<Goblin>(path_, tileSize_)); // Add a new Goblin object on the heap and store it in the objects vector.
         goblinsLeftToSpawn_--; // Decrease goblin count.
         enemiesToSpawn_--;     // Decrease total spawn count.
         return;
     }
 
     if (wolvesLeftToSpawn_ > 0) { // If no goblins are left, try spawning wolf.
-        objects_.push_back(std::make_unique<Wolf>(path_, tileSize_)); // Add a new Wolf object.
+        objects_.push_back(std::make_unique<Wolf>(path_, tileSize_)); // Add a new Wolf object on the heap and store it in the objects vector.
         wolvesLeftToSpawn_--;  // Decrease wolf count.
         enemiesToSpawn_--;     // Decrease total spawn count.
         return;
@@ -84,7 +84,7 @@ void Game::checkLevelFinished() {
     bool anyEnemyAlive = false; // Will track whether at least one enemy is still active.
 
     for (const auto& obj : objects_) { // Check all game objects.
-        Enemy* enemy = dynamic_cast<Enemy*>(obj.get()); // Try to treat object as an Enemy.
+        Enemy* enemy = dynamic_cast<Enemy*>(obj.get()); // Checks if the object is an Enemy by trying to cast it. If the cast returns nullptr, it's not an enemy.
         if (enemy && enemy->isActive()) { // If this object is an enemy and is still active,
             anyEnemyAlive = true;         // mark that at least one enemy is alive.
             break;                        // No need to keep checking.

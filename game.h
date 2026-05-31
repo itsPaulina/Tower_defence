@@ -40,7 +40,7 @@ private:
     };
 
     sf::Music backgroundMusic_; // Background music played during the game.
-    GameState state_ = GameState::MainMenu; // Current game state.
+    GameState state_ = GameState::MainMenu; // Current game state, later used to switch between menus and gameplay.
     Difficulty selectedDifficulty_ = Difficulty::Medium; // Currently selected difficulty.
 
     sf::RenderWindow window_; // Main game window.
@@ -52,7 +52,7 @@ private:
     sf::RectangleShape startButton_;  // Button for starting the game from menu.
 
     std::unique_ptr<sf::Text> menuTitle_;  // Title text in the difficulty menu.
-    std::unique_ptr<sf::Text> easyText_;   // Label for easy button.
+    std::unique_ptr<sf::Text> easyText_;   // Label for easy button, smart pointer for automatic memory management.
     std::unique_ptr<sf::Text> mediumText_; // Label for medium button.
     std::unique_ptr<sf::Text> hardText_;   // Label for hard button.
     std::unique_ptr<sf::Text> startText_;  // Label for start button.

@@ -7,7 +7,7 @@ class GameObject {
 public:
     virtual ~GameObject() = default; // Virtual destructor for safe deletion through a base-class pointer.
 
-    virtual void update(float dt) = 0;                  // Pure virtual function for updating object logic.
+    virtual void update(float dt) = 0;                  // Pure virtual function for updating object logic, virtual to allow polymorphic behavior.
     virtual void draw(sf::RenderWindow& window) = 0;    // Pure virtual function for drawing the object.
     virtual sf::FloatRect getBounds() const = 0;        // Pure virtual function for returning object bounds.
 

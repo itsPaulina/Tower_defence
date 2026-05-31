@@ -40,7 +40,7 @@ void Enemy::moveAlongPath(float dt) {
     }
 
     sf::Vector2f current{x_, y_};                 // Current enemy position.
-    sf::Vector2f target = tileCenter(path_[pathIndex_ + 1]); // Next target tile center.
+    sf::Vector2f target = tileCenter(path_[pathIndex_ + 1]); // Next target tile center, which is the next point in the path.
     sf::Vector2f dir = target - current;          // Direction vector from current position to target.
     float len = std::sqrt(dir.x * dir.x + dir.y * dir.y); // Length of the direction vector.
 

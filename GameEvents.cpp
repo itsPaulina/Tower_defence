@@ -26,7 +26,7 @@ void Game::handleEvents() {
 
 
 void Game::handleMousePressed(const sf::Event::MouseButtonPressed& mb) {
-    if (mb.button != sf::Mouse::Button::Left) { // Ignore all mouse buttons except the left one.
+    if (mb.button != sf::Mouse::Button::Left) { // If the pressed button is not the left mouse button, ignore the event.
         return;
     }
 
