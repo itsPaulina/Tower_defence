@@ -46,12 +46,12 @@ sf::FloatRect Tower::getBounds() const {
 
 // Finds the nearest active enemy inside the tower's range.
 Enemy* Tower::findTarget(const std::vector<std::unique_ptr<GameObject>>& objects) const {
-    Enemy* best = nullptr;   // Stores the current best target.
+    Enemy* best = nullptr;   // Stores the current best target. 
     float bestDist = range_; // Stores the distance to the best target found so far.
 
     for (const auto& obj : objects) { // Loop through all game objects.
-        Enemy* e = dynamic_cast<Enemy*>(obj.get()); // Try to treat object as an enemy.
-        if (!e || !e->isActive())
+        Enemy* e = dynamic_cast<Enemy*>(obj.get()); // Try to treat object as an enemy, used when we want to access enemy-specific properties like position or health. If the cast returns nullptr, it's not an enemy.
+        if (!e || !e->isActive()) // Skip objects that are not enemies or are inactive.
             continue; // Skip objects that are not active enemies.
 
         auto p = e->getPosition(); // Get enemy position.
@@ -61,8 +61,8 @@ Enemy* Tower::findTarget(const std::vector<std::unique_ptr<GameObject>>& objects
         float dist = std::sqrt(dx * dx + dy * dy); // Compute actual distance.
 
         if (dist <= bestDist) { // Keep the closest enemy inside range.
-            bestDist = dist;
-            best = e;
+            bestDist = dist; // Update best distance to this enemy.
+            best = e; // Update best target to this enemy.
         }
     }
 
@@ -94,19 +94,19 @@ void Tower::attack(std::vector<std::unique_ptr<GameObject>>& objects) {
 
 // Catapult tower with its own stats.
 Catapult::Catapult(sf::Vector2f pos)
-    : Tower(pos, 170.f, 20, 1.8f, sf::Color(160, 110, 60)) {}
+    : Tower(pos, 170.f, 20, 1.8f, sf::Color(160, 110, 60)) {} // Medium range, solid damage, moderate cooldown.
 
 
 // Catapult update.
 // Uses the base Tower logic for now.
-void Catapult::update(float dt) {
+void Catapult::update(float dt) { // No special behavior for catapult, just use the base tower update for cooldown management.
     Tower::update(dt); // Reuse base tower cooldown logic.
 }
 
 
 // CannonTower with faster firing and longer range.
-CannonTower::CannonTower(sf::Vector2f pos)
-    : Tower(pos, 210.f, 14, 0.9f, sf::Color(70, 130, 255)) {}
+CannonTower::CannonTower(sf::Vector2f pos) 
+    : Tower(pos, 210.f, 14, 0.9f, sf::Color(70, 130, 255)) {} // Long range, faster attacks, but lower damage.
 
 
 // CannonTower update.

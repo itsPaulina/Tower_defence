@@ -99,7 +99,7 @@ private:
 
     sf::Clock deltaClock_; // Clock used to measure frame time.
 
-    std::vector<std::unique_ptr<GameObject>> objects_; // All game objects stored dynamically.
+    std::vector<std::unique_ptr<GameObject>> objects_; // All game objects stored dynamically, polymorphic behavior allows storing different types of objects in the same vector.
     std::vector<sf::Vector2i> path_;                   // Enemy movement path.
     std::vector<sf::Vector2i> occupiedTiles_;         // Tiles already occupied by towers.
     std::vector<WaveData> waves_;                     // All wave configurations.

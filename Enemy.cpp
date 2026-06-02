@@ -33,7 +33,7 @@ Enemy::Enemy(int hp, float speed, int reward,
 }
 
 
-void Enemy::moveAlongPath(float dt) {
+void Enemy::moveAlongPath(float dt) { // Move the enemy along its path based on its speed and the elapsed time.
     if (pathIndex_ >= path_.size() - 1) { // Check if the enemy reached the last tile.
         active_ = false;                  // Mark enemy as inactive.
         return;                           // Stop moving.
